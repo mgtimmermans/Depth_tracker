@@ -23,12 +23,10 @@ Function to send alert. Use this function to send alert when bad posture detecte
 Feel free to get creative and customize as per your convenience.
 """
 
-
 def sendWarning(x):
     pass
 
 
-# =============================CONSTANTS and INITIALIZATIONS=====================================#
 # Initilize frame counters.
 good_frames = 0
 bad_frames = 0
@@ -48,7 +46,7 @@ pink = (255, 0, 255)
 # Initialize mediapipe pose class.
 mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
-# ===============================================================================================#
+
 
 
 if __name__ == "__main__":
@@ -56,62 +54,62 @@ if __name__ == "__main__":
     file_name = 'input.mp4'
     cap = cv2.VideoCapture(0 )
 
-    # Meta.
+    # Meta
     fps = int(cap.get(cv2.CAP_PROP_FPS))
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     frame_size = (width, height)
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
-    # Video writer.
-    video_output = cv2.VideoWriter('output.mp4', fourcc, fps, frame_size)
+    # Video writer
+    #video_output = cv2.VideoWriter('output.mp4', fourcc, fps, frame_size)
 
     while cap.isOpened():
-        # Capture frames.
+        # Capture frames
         success, image = cap.read()
         if not success:
             print("Null.Frames")
             break
-        # Get fps.
+        # Get fps
         fps = cap.get(cv2.CAP_PROP_FPS)
-        # Get height and width.
+        # Get height and width
         h, w = image.shape[:2]
 
-        # Convert the BGR image to RGB.
+        # Convert the BGR image to RGB
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        # Process the image.
+        # Process the image
         keypoints = pose.process(image)
 
-        # Convert the image back to BGR.
+        # Convert the image back to BGR
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-        # Use lm and lmPose as representative of the following methods.
+        # Use lm and lmPose as representative of the following methods
         lm = keypoints.pose_landmarks
         lmPose = mp_pose.PoseLandmark
 
         # Acquire the landmark coordinates.
-        # Once aligned properly, left or right should not be a concern. 
+        # Once aligned properly, left or right should not be a concern.
              
-        # Left shoulder.
+        # Left shoulder
         l_shldr_x = int(lm.landmark[lmPose.LEFT_SHOULDER].x * w)
         l_shldr_y = int(lm.landmark[lmPose.LEFT_SHOULDER].y * h)
         # Right shoulder
         r_shldr_x = int(lm.landmark[lmPose.RIGHT_SHOULDER].x * w)
         r_shldr_y = int(lm.landmark[lmPose.RIGHT_SHOULDER].y * h)
-        # Left ear.
+        # Left ear
         l_ear_x = int(lm.landmark[lmPose.LEFT_EAR].x * w)
         l_ear_y = int(lm.landmark[lmPose.LEFT_EAR].y * h)
-        # Left hip.
+        # Left hip
         l_hip_x = int(lm.landmark[lmPose.LEFT_HIP].x * w)
         l_hip_y = int(lm.landmark[lmPose.LEFT_HIP].y * h)
-        # Right hip.
+        # Right hip
         r_hip_x = int(lm.landmark[lmPose.RIGHT_HIP].x * w)
         r_hip_y = int(lm.landmark[lmPose.RIGHT_HIP].y * h)
-        # Right knee.
+        # Right knee
         r_knee_x = int(lm.landmark[lmPose.RIGHT_KNEE].x * w)
         r_knee_y = int(lm.landmark[lmPose.RIGHT_KNEE].y * h)
-        # Left knee.
+        # Left knee
         l_knee_x = int(lm.landmark[lmPose.LEFT_KNEE].x * w)
         l_knee_y = int(lm.landmark[lmPose.LEFT_KNEE].y * h)
         # Right ankle.
@@ -248,7 +246,7 @@ if __name__ == "__main__":
        # if bad_time > 180:
         #    sendWarning()
         # Write frames.
-        video_output.write(image)
+        #video_output.write(image)
 
         # Display.
         cv2.imshow('MediaPipe Pose', image)
@@ -257,3 +255,6 @@ if __name__ == "__main__":
 
 cap.release()
 cv2.destroyAllWindows()
+
+
+#Resources https://github.com/spmallick/learnopencv/tree/master/Posture-analysis-system-using-MediaPipe-Pose
